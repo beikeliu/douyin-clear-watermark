@@ -72,7 +72,7 @@ app.get('/api/v1/douyinVideoRemoveWatermark', async (req, res) => {
         const finalUrl = await getFinalUrl(downUrl);
         if (finalUrl) {
             res.json({
-                codo: 0,
+                code: 0,
                 data: {
                     url: finalUrl
                 },
