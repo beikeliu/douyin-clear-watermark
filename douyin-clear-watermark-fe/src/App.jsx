@@ -4,18 +4,18 @@ import axios from 'axios';
 const App = () => {
   const textareaRef = useRef(null);
   const [outputValue, setOutputValue] = useState('');
-  const disableClick = useRef(false);
+  const [loading, setLoading] = useState();
 
   const handleButtonClick = async () => {
-    if (textareaRef.current.value && !disableClick.current) {
+    if (textareaRef.current.value && !loading) {
       setOutputValue('');
-      disableClick.current = true;
+      setLoading(true);
       const res = await axios.get(`/api/v1/douyinVideoRemoveWatermark`, {
         params: {
           shareText: textareaRef.current.value
         },
       }).catch(() => { }).finally(() => {
-        disableClick.current = false;
+        setLoading(false);
       });
       setOutputValue(res.data.data.url);
     }
@@ -27,6 +27,7 @@ const App = () => {
       <textarea ref={textareaRef} placeholder='请输入抖音视频分享内容' className='input'></textarea>
       <button onClick={handleButtonClick} className='button'>点击一键去水印</button>
       <textarea value={outputValue} placeholder='解析地址预览' className='output'></textarea>
+      {loading ? <p>当前正在解析...</p> : null}
     </>
   );
 }
