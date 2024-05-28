@@ -35,13 +35,13 @@ const douyinVideoRemoveWatermark = async (shareText) => {
     const urlRegex = /https?:\/\/[^\s]+/g;
     const urls = shareText.match(urlRegex);
     const url = _.get(urls, '[0]');
-    if (!url) return console.error('!url');
+    if (!url) return console.error('url not found');
     const html = await fetchRedirectedURL(url);
-    if (!html) return console.error('!html');;
+    if (!html) return console.error('html not found');;
     const data = await extractJsonFromHtml(html);
-    if (!data) return console.error('!data');;
+    if (!data) return console.error('data not found');;
     const originUrl = _.get(data, 'app.videoInfoRes.item_list[0].video.play_addr.url_list[0]');
-    if (!originUrl) return console.error('!originUrl');;
+    if (!originUrl) return console.error('play address not found');;
     const downUrl = originUrl.replace('playwm', 'play');
     return downUrl;
 }
@@ -81,6 +81,8 @@ app.get('/api/v1/douyinVideoRemoveWatermark', async (req, res) => {
         } else {
             res.json({ code: -1 })
         }
+    } else {
+        res.json({ code: -1 })
     }
 });
 
